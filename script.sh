@@ -70,6 +70,7 @@ sudo systemctl restart nginx
 
 #start app
 echo stating app
-export FLASK_APP=app.py
-flask run
+python app.py
+
+
 
