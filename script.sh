@@ -31,6 +31,17 @@ source demoenv/bin/activate
 cd Yummy-Recipes-Api
 sudo pip install -r requirements.txt
 
+#configure host ip
+echo configuring host ip
+sudo rm -rf app.py
+sudo bash -c 'cat <<EOF> ./app.py
+"""module to run app"""
+from apps import app
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", threaded=True)
+EOF'
+
 #start nginx
 echo starting nginx
 sudo systemctl start nginx
