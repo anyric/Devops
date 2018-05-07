@@ -25,7 +25,7 @@ virtualenv -p /usr/bin/python3 demoenv
 git clone https://github.com/anyric/Yummy-Recipes-Api.git
 
 #activate virtualenv
-source script.sh
+source demoenv/bin/activate
 
 #enter project folder and install requirements
 cd Yummy-Recipes-Api
