@@ -29,7 +29,7 @@ source demoenv/bin/activate
 
 #enter project folder and install requirements
 cd Yummy-Recipes-Api
-sudo pip install -r requirements.txt
+pip install -r requirements.txt
 
 #configure host ip
 echo configuring host ip
