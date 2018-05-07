@@ -13,7 +13,7 @@ export LC_CTYPE="en_US.UTF-8"
 #install python and dependancies
 echo installing python 3.6 and dependancies
 sudo apt-get install -y python=3.6
-sudo apt-get install -y python-pip nginx gunicorn
+sudo apt-get install -y python-pip nginx 
 
 #install virtualenv
 sudo apt-get install -y virtualenv
@@ -59,5 +59,6 @@ sudo systemctl restart nginx
 
 #start app
 echo stating app
-gunicorn manage:app
+export FLASK_APP=app.py
+flask run
 
