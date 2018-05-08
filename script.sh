@@ -45,7 +45,7 @@ EOF'
 #create wsgi entry point
 echo creating wsgi entry point
 sudo bash -c 'cat <<EOF> ./wsgi.py
-"""module for wsgi entry point
+"""module for wsgi entry point"""
 from app import app
 
 if __name__== "__main__":
