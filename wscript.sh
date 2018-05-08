@@ -21,7 +21,7 @@ installPython(){
 
 installWsgi(){
     printf '*********************Setting up wsgi server************************** \n'
-    pip install uwsgi
+    sudo pip3 install uwsgi
 
 }
 installNginx(){
@@ -55,6 +55,7 @@ setupProjectDependancies(){
 
 setupHostIP(){
     printf "****************Configuring Host Ip Address***************** \n"
+    cd Yummy-Recipes-Api
     sudo rm -rf app.py
     sudo bash -c 'cat <<EOF> ./app.py
     """module to run app"""
@@ -67,6 +68,7 @@ setupHostIP(){
 
 createWsgiEntryPoint(){
     printf "*****************Creating Wsgi Entry Point*************** \n"
+    cd Yummy-Recipes-Api
     sudo bash -c 'cat <<EOF> ./wsgi.py
     """module for wsgi entry point"""
     from app import app
@@ -106,6 +108,7 @@ restartNginx(){
 
 configureWsgi(){
     printf "******************Configuring wsgi************************\n"
+    cd Yummy-Recipes-Api
     sudo bash -c 'cat <<EOF> ./wsgi_config.json
     {
         "uwsgi":{
@@ -121,7 +124,7 @@ startApp(){
     printf "*******************Starting App*************************** \n"
     #python app.py
     #uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi # add & at the end here to run in background
-    uwsgi --json wsgi_config.json
+    demoenv/bin/uwsgi --json wsgi_config.json
 }
 
 run(){
