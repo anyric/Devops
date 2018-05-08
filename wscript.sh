@@ -123,8 +123,8 @@ EOF'
 startApp(){
     printf "*******************Starting App*************************** \n"
     #python app.py
-    #uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi # add & at the end here to run in background
-    uwsgi --json wsgi_config.json
+    uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi # add & at the end here to run in background
+    #uwsgi --json wsgi_config.json
 }
 
 run(){
