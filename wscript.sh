@@ -142,6 +142,7 @@ run(){
     startNginx
     configureNginx
     restartNginx
+    configureWsgi
     startApp
 }
 
