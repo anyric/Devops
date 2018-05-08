@@ -63,7 +63,7 @@ setupHostIP(){
 
     if __name__ == "__main__":
         app.run(host="0.0.0.0", threaded=True)
-    EOF'
+EOF'
 }
 
 createWsgiEntryPoint(){
@@ -75,7 +75,7 @@ createWsgiEntryPoint(){
 
     if __name__== "__main__":
         app.run()
-    EOF'
+EOF'
 }
 
 startNginx(){
@@ -98,7 +98,7 @@ configureNginx(){
                     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             }
     }
-    EOF'
+EOF'
 }
 
 restartNginx(){
@@ -118,13 +118,13 @@ configureWsgi(){
             "processes": 5,
         }
     }
-    EOF'
+EOF'
 }
 startApp(){
     printf "*******************Starting App*************************** \n"
     #python app.py
     #uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi # add & at the end here to run in background
-    demoenv/bin/uwsgi --json wsgi_config.json
+    uwsgi --json wsgi_config.json
 }
 
 run(){
