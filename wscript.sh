@@ -28,7 +28,7 @@ installWsgi(){
     pip install uwsgi
 
 }
-installConfigNginx(){
+installNginx(){
     """Install and config Nginx"""
     sudo apt-get install nginx
 }
@@ -74,7 +74,8 @@ setupHostIP(){
         app.run(host="0.0.0.0", threaded=True)
     EOF'
 }
-createWsgiEntryPoin(){
+
+createWsgiEntryPoint(){
     """Create Wsgi Entry Point"""
     printf("*****************Creating Wsgi Entry Point***************")
     echo creating wsgi entry point
@@ -99,8 +100,6 @@ configureNginx(){
     #remove default config file
     sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
-    #nginx configuration
-    echo configuring ngix
     sudo bash -c 'cat <<EOF> /etc/nginx/sites-available/default
     server {
             listen 80;
@@ -119,15 +118,47 @@ restartNginx(){
     """Restarting Nginx"""
     printf("*******************Restarting Nginx************************")
     sudo systemctl restart nginx
-
 }
 
+configureWsgi(){
+    """Configuring wsgi"""
+    printf("******************Configuring wsgi************************")
+    sudo bash -c 'cat <<EOF> ./wsgi_config.json
+    {
+        "uwsgi":{
+            "server": ["0.0.0.0:5000"],
+            "module": "Yummy-Recipes-Api:app",
+            "master": true,
+            "processes": 5,
+        }
+    }
+    EOF'
+}
 startApp(){
     """Starting App"""
     printf("*******************Starting App***************************")
     #python app.py
-    demoenv/bin/uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi:app # add & at the end here to run in background
+    #uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi # add & at the end here to run in background
+    uwsgi --json wsgi_config.json
 }
 
+run(){
+    updateServer
+    exportLang
+    installPython
+    installWsgi
+    installNginx
+    setupVirtualenv
+    cloneRepo
+    activateVirtualenv
+    setupProjectDependancies
+    setupHostIP
+    createWsgiEntryPoint
+    startNginx
+    configureNginx
+    restartNginx
+    startApp
+}
 
+run
 
