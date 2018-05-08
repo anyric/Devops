@@ -68,6 +68,10 @@ EOF'
 echo restating nginx
 sudo systemctl restart nginx
 
+#export database url
+echo exporting $database_url
+export DATABASE_URL="postgres://postgres:postgres1234@postgresdb.cztrtf3jyreo.us-east-2.rds.amazonaws.com:5432/yummy_api"
+
 #start app
 echo stating app
 python app.py
