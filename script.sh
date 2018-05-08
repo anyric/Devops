@@ -13,7 +13,7 @@ export LC_CTYPE="en_US.UTF-8"
 #install python and dependancies
 echo installing python 3.6 and dependancies
 sudo apt-get install -y python=3.6
-sudo apt-get install -y python3-pip nginx 
+sudo apt-get install -y python3-pip nginx uwsgi 
 
 #install virtualenv
 sudo apt-get install -y virtualenv
@@ -41,6 +41,17 @@ from apps import app
 if __name__ == "__main__":
     app.run(host="0.0.0.0", threaded=True)
 EOF'
+
+#create wsgi entry point
+echo creating wsgi entry point
+sudo bash -c 'cat <<EOF> ./wsgi.py
+"""module for wsgi entry point
+from app import app
+
+if __name__== "__main__":
+    app.run()
+EOF'
+
 
 #start nginx
 echo starting nginx
@@ -70,7 +81,7 @@ sudo systemctl restart nginx
 
 #start app
 echo stating app
-python app.py
-
+#python app.py
+uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi:app
 
 
