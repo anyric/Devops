@@ -1,54 +1,46 @@
 #!/bin/bash
 
 updateServer(){
-    """update OS"""
-    printf "***********************Updating OS********************** \n"
+    printf '***********************Updating OS********************** \n'
     sudo apt-get update
 }
 
 exportLang() {
-    """export lan variables"""
-    printf "***********************Exporting LANG******************* \n"
+    printf '***********************Exporting LANG******************* \n'
     export LANG="en_US.UTF-8"
     export LC_ALL="en_US.UTF-8"
     export LC_CTYPE="en_US.UTF-8"
 }
 
 installPython(){
-    """install python3.6 and dependancies"""
-    printf "**********************Installing Python 3.6 and dependancies***************** \n"
+    printf '**********************Installing Python 3.6 and dependancies***************** \n'
     sudo apt-get install -y python=3.6
     sudo apt-get install -y python3-pip  
     sudo apt-get install uwsgi-plugin-python
 }
 
 installWsgi(){
-    """install and configure wsgi server"""
-    printf "*********************Setting up wsgi server************************** \n"
+    printf '*********************Setting up wsgi server************************** \n'
     pip install uwsgi
 
 }
 installNginx(){
-    """Install and config Nginx"""
     printf "*********************Installing Nginx******************************* \n"
     sudo apt-get install nginx
 }
 #create Virtualenv
 setupVirtualenv(){
-    """install virtualenv"""
     printf "******************Setting up virtualenv******************* \n"
     sudo apt-get install -y virtualenv
     virtualenv -p /usr/bin/python3 demoenv
 }
 
 cloneRepo(){
-    """Clone project repo from git"""
     printf "*******************Cloning git Repo******************* \n"
     git clone https://github.com/anyric/Yummy-Recipes-Api.git
 }
 
 activateVirtualenv(){
-    """Activate virtualenv"""
     printf "*****************Activation virtualenv**************** \n"
     #activate virtualenv
     source demoenv/bin/activate
@@ -56,16 +48,13 @@ activateVirtualenv(){
 }
 
 setupProjectDependancies(){
-    """Enter project folder and install requirements"""
     printf "*******************Installing requirements.txt************* \n"
     cd Yummy-Recipes-Api
     pip install -r requirements.txt
 }
 
 setupHostIP(){
-    """Configure host ip address"""
     printf "****************Configuring Host Ip Address***************** \n"
-    echo configuring host ip
     sudo rm -rf app.py
     sudo bash -c 'cat <<EOF> ./app.py
     """module to run app"""
@@ -77,9 +66,7 @@ setupHostIP(){
 }
 
 createWsgiEntryPoint(){
-    """Create Wsgi Entry Point"""
     printf "*****************Creating Wsgi Entry Point*************** \n"
-    echo creating wsgi entry point
     sudo bash -c 'cat <<EOF> ./wsgi.py
     """module for wsgi entry point"""
     from app import app
@@ -90,13 +77,11 @@ createWsgiEntryPoint(){
 }
 
 startNginx(){
-    """Stating Nginx"""
     printf "******************Starting Nginx************************** \n"
     sudo systemctl start nginx
 }
 
 configureNginx(){
-    """Configuring Nginx"""
     printf "******************Configuring Nginx*********************** \n"
     sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
@@ -115,13 +100,11 @@ configureNginx(){
 }
 
 restartNginx(){
-    """Restarting Nginx"""
     printf "*******************Restarting Nginx************************ \n"
     sudo systemctl restart nginx
 }
 
 configureWsgi(){
-    """Configuring wsgi"""
     printf "******************Configuring wsgi************************\n"
     sudo bash -c 'cat <<EOF> ./wsgi_config.json
     {
@@ -135,7 +118,6 @@ configureWsgi(){
     EOF'
 }
 startApp(){
-    """Starting App"""
     printf "*******************Starting App*************************** \n"
     #python app.py
     #uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi # add & at the end here to run in background
