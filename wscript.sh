@@ -58,10 +58,10 @@ setupHostIP(){
 
     sudo rm -rf app.py
     sudo bash -c 'cat <<EOF> ./app.py
-    from apps import app
+from apps import app
 
-    if __name__ == "__main__":
-        app.run(host="0.0.0.0", threaded=True)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", threaded=True)
 EOF'
 }
 
@@ -69,10 +69,10 @@ createWsgiEntryPoint(){
     printf "*****************Creating Wsgi Entry Point*************** \n"
 
     sudo bash -c 'cat <<EOF> ./wsgi.py
-    from app import app
+from app import app
 
-    if __name__== "__main__":
-        app.run()
+if __name__== "__main__":
+    app.run()
 EOF'
 }
 
