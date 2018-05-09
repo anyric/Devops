@@ -50,7 +50,7 @@ activateVirtualenv(){
 setupProjectDependancies(){
     printf "*******************Installing requirements.txt************* \n"
     cd Yummy-Recipes-Api
-    pip install -r requirements.txt
+    sudo pip install -r requirements.txt
 }
 
 setupHostIP(){
