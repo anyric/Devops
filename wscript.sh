@@ -14,7 +14,7 @@ exportLang() {
 
 installPython(){
     printf '**********************Installing Python 3.6 and dependancies***************** \n'
-    sudo apt-get install -y python3.6
+    sudo apt-get install -y python=3.6
     sudo apt-get install -y python3-pip  
     sudo apt-get install uwsgi-plugin-python
 }
@@ -32,7 +32,7 @@ installNginx(){
 setupVirtualenv(){
     printf "******************Setting up virtualenv******************* \n"
     sudo apt-get install -y virtualenv
-    virtualenv -p /usr/bin/python3 practiceenv
+    virtualenv -p /usr/bin/python3 my_env
 }
 
 cloneRepo(){
@@ -43,14 +43,14 @@ cloneRepo(){
 activateVirtualenv(){
     printf "*****************Activation virtualenv**************** \n"
     #activate virtualenv
-    source practiceenv/bin/activate
+    source my_env/bin/activate
 
 }
 
 setupProjectDependancies(){
     printf "*******************Installing requirements.txt************* \n"
     cd Yummy-Recipes-Api
-    sudo pip install -r requirements.txt
+    pip install -r requirements.txt
 }
 
 setupHostIP(){
