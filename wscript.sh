@@ -70,7 +70,6 @@ createWsgiEntryPoint(){
     printf "*****************Creating Wsgi Entry Point*************** \n"
 
     sudo bash -c 'cat <<EOF> ./wsgi.py
-    """module for wsgi entry point"""
     from app import app
 
     if __name__== "__main__":
@@ -122,9 +121,7 @@ EOF'
 }
 startApp(){
     printf "*******************Starting App*************************** \n"
-    #python app.py
-    uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi # add & at the end here to run in background
-    #uwsgi --json wsgi_config.json
+    uwsgi --socket 0.0.0.0:5000 --protocol=http -w WSGI:app # add & at the end here to run in background
 }
 
 run(){
