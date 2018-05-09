@@ -32,7 +32,7 @@ installNginx(){
 setupVirtualenv(){
     printf "******************Setting up virtualenv******************* \n"
     sudo apt-get install -y virtualenv
-    virtualenv -p /usr/bin/python3 demoenv
+    virtualenv -p /usr/bin/python3 practiceenv
 }
 
 cloneRepo(){
@@ -43,7 +43,7 @@ cloneRepo(){
 activateVirtualenv(){
     printf "*****************Activation virtualenv**************** \n"
     #activate virtualenv
-    source demoenv/bin/activate
+    source practiceenv/bin/activate
 
 }
 
@@ -116,6 +116,10 @@ configureWsgi(){
     threads = 2
 EOF'
 }
+exportDatabaseUrl(){
+    printf "********************Export DATABASE_URL****************** \n"
+    export DATABASE_URL="postgres://postgres:postgres1234@postgresdb.cztrtf3jyreo.us-east-2.rds.amazonaws.com:5432/yummy_api"
+}
 startApp(){
     printf "*******************Starting App*************************** \n"
     #uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi:app # add & at the end here to run in background
@@ -138,6 +142,7 @@ run(){
     configureNginx
     restartNginx
     configureWsgi
+    exportDatabaseUrl
     startApp
 }
 
