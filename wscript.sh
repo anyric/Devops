@@ -111,7 +111,7 @@ configureWsgi(){
     sudo bash -c 'cat <<EOF> ./wsgi_config.json
     {
         "uwsgi":{
-            "server": ["0.0.0.0:5000"],
+            "socket": ["0.0.0.0:5000"],
             "module": "Yummy-Recipes-Api:app",
             "master": true,
             "processes": 5,
@@ -122,7 +122,7 @@ EOF'
 startApp(){
     printf "*******************Starting App*************************** \n"
     #uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi:app # add & at the end here to run in background
-    uwsgi --json wsgi_config.json
+    uwsgi  wsgi_config.json
 }
 
 run(){
