@@ -111,7 +111,7 @@ configureWsgi(){
     sudo bash -c 'cat <<EOF> ./wsgi_config.ini
     [uwsgi]
     socket = 0.0.0.0:5000
-    wsgi-file = ./wsgi.py
+    module = app:app
     processes = 5
     master = true
     threads = 2
