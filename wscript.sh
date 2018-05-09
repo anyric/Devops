@@ -14,7 +14,7 @@ exportLang() {
 
 installPython(){
     printf '**********************Installing Python 3.6 and dependancies***************** \n'
-    sudo apt-get install -y python=3.6
+    sudo apt-get install -y python3.6
     sudo apt-get install -y python3-pip  
     sudo apt-get install uwsgi-plugin-python
 }
@@ -51,7 +51,6 @@ setupProjectDependancies(){
     printf "*******************Installing requirements.txt************* \n"
     cd Yummy-Recipes-Api
     pip install -r requirements.txt
-    pip install flask
 }
 
 setupHostIP(){
@@ -123,8 +122,8 @@ exportDatabaseUrl(){
 }
 startApp(){
     printf "*******************Starting App*************************** \n"
-    #uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi:app # add & at the end here to run in background
-    uwsgi  wsgi_config.ini
+    uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi:app # add & at the end here to run in background
+    #uwsgi  wsgi_config.ini
 }
 
 run(){
