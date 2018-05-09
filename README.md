@@ -1,8 +1,6 @@
-# Devops
-
 # Yummy Recipes API AWS Deployment Script
 
-# Deployment Instructions
+## Deployment Instructions
 The following steps should help you deploy the Yummy Recipes Api to AWS platform.
 * AWS Account
 If you don't have an aws account already, the signup for one from here https://aws.amazon.com/ follow the step by step instruction given to create your account.
