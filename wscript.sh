@@ -19,14 +19,9 @@ installPython(){
     sudo apt-get install uwsgi-plugin-python
 }
 
-installWsgi(){
-    printf '*********************Setting up wsgi server************************** \n'
-    sudo pip3 install uwsgi
-
-}
-installNginx(){
+installNginxGunicorn(){
     printf "*********************Installing Nginx******************************* \n"
-    sudo apt-get install nginx
+    sudo apt-get install nginx gunicorn
 }
 #create Virtualenv
 setupVirtualenv(){
@@ -65,17 +60,6 @@ if __name__ == "__main__":
 EOF'
 }
 
-createWsgiEntryPoint(){
-    printf "*****************Creating Wsgi Entry Point*************** \n"
-
-    sudo bash -c 'cat <<EOF> ./wsgi.py
-from app import app
-
-if __name__== "__main__":
-    app.run()
-EOF'
-}
-
 startNginx(){
     printf "******************Starting Nginx************************** \n"
     sudo systemctl start nginx
@@ -104,33 +88,19 @@ restartNginx(){
     sudo systemctl restart nginx
 }
 
-configureWsgi(){
-    printf "******************Configuring wsgi************************\n"
-
-    sudo bash -c 'cat <<EOF> ./wsgi_config.ini
-    [uwsgi]
-    socket = 0.0.0.0:5000
-    module = app:app
-    processes = 5
-    master = true
-    threads = 2
-EOF'
-}
 exportDatabaseUrl(){
     printf "********************Export DATABASE_URL****************** \n"
     export DATABASE_URL="postgres://postgres:postgres1234@postgresdb.cztrtf3jyreo.us-east-2.rds.amazonaws.com:5432/yummy_api"
 }
 startApp(){
     printf "*******************Starting App*************************** \n"
-    uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi:app # add & at the end here to run in background
-    #uwsgi  wsgi_config.ini
+    gunicorn -w 4 app:app
 }
 
 run(){
     updateServer
     exportLang
     installPython
-    installWsgi
     installNginx
     setupVirtualenv
     cloneRepo
@@ -141,7 +111,6 @@ run(){
     startNginx
     configureNginx
     restartNginx
-    configureWsgi
     exportDatabaseUrl
     startApp
 }
