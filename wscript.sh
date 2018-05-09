@@ -108,21 +108,19 @@ restartNginx(){
 configureWsgi(){
     printf "******************Configuring wsgi************************\n"
 
-    sudo bash -c 'cat <<EOF> ./wsgi_config.json
-    {
-        "uwsgi":{
-            "socket": ["0.0.0.0:5000"],
-            "module": "Yummy-Recipes-Api:app",
-            "master": true,
-            "processes": 5,
-        }
-    }
+    sudo bash -c 'cat <<EOF> ./wsgi_config.ini
+    [uwsgi]
+    socket = 0.0.0.0:5000
+    wsgi-file = ./wsgi.py
+    processes = 5
+    master = true
+    threads = 2
 EOF'
 }
 startApp(){
     printf "*******************Starting App*************************** \n"
     #uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi:app # add & at the end here to run in background
-    uwsgi  wsgi_config.json
+    uwsgi  wsgi_config.ini
 }
 
 run(){
