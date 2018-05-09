@@ -58,7 +58,6 @@ setupHostIP(){
 
     sudo rm -rf app.py
     sudo bash -c 'cat <<EOF> ./app.py
-    """module to run app"""
     from apps import app
 
     if __name__ == "__main__":
