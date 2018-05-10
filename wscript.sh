@@ -108,7 +108,7 @@ run(){
     updateServer
     exportLang
     installPython
-    installNginx
+    installNginxGunicorn
     setupVirtualenv
     cloneRepo
     activateVirtualenv
