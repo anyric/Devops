@@ -88,7 +88,8 @@ restartNginx(){
     sudo systemctl restart nginx
 }
 
-function configSSH(){
+configSSH(){
+    printf "********************Configuring SSH****************** \n"
     sudo apt-get install -y software-properties-common
     sudo add-apt-repository ppa:certbot/certbot
     sudo apt-get update
