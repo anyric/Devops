@@ -97,7 +97,7 @@ configureSupervisor(){
     printf "***********************Installing Supervisor*************** \n"
     sudo apt install -y supervisor
     sudo service supervisor start
-    sudo bash -c 'cat <<EOF> ./
+    sudo bash -c 'cat <<EOF> ./supervisord.conf
     [program:yummyrecipes]
     directory=/home/ubuntu/Devops/Yummy-Recipes-Api
     command=/home/ubuntu/Devops/my_env/bin/gunicorn -w 4 -b 0.0.0.0:5000 -D app:app
