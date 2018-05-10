@@ -123,10 +123,10 @@ run(){
     activateVirtualenv
     setupProjectDependancies
     setupHostIP
-    createWsgiEntryPoint
     startNginx
     configureNginx
-    configureSSH
+    #configureSSH
+    configureSupervisor
     restartNginx
     exportDatabaseUrl
     startApp
