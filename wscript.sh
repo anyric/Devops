@@ -88,6 +88,13 @@ restartNginx(){
     sudo systemctl restart nginx
 }
 
+function configSSH(){
+    sudo apt-get install software-properties-common
+    sudo add-apt-repository ppa:certbot/certbot
+    sudo apt-get update
+    sudo apt-get install python-certbot-nginx
+    sudo certbot --nginx 
+}
 exportDatabaseUrl(){
     printf "********************Export DATABASE_URL****************** \n"
     export DATABASE_URL="postgres://postgres:postgres1234@postgresdb.cztrtf3jyreo.us-east-2.rds.amazonaws.com:5432/yummy_api"
@@ -110,6 +117,7 @@ run(){
     createWsgiEntryPoint
     startNginx
     configureNginx
+    configSSH
     restartNginx
     exportDatabaseUrl
     startApp
