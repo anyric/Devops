@@ -75,10 +75,6 @@ configureNginx(){
             server_name anyric.tk;
             location / {
                     proxy_pass http://127.0.0.1:5000;
-                    # proxy_set_header HOST \$host;
-                    # proxy_set_header X-Forwarded-Proto \$scheme;
-                    # proxy_set_header X-Real-IP \$remote_addr;
-                    # proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
             }
     }
 EOF'
@@ -99,10 +95,17 @@ configureSSH(){
 }
 configureSupervisor(){
     printf "***********************Installing Supervisor*************** \n"
-    sudo apt install supervisor
-    #sudo apt-get install supervisor
-    echo_supervisord_conf > supervisord.conf
-
+    sudo apt install -y supervisor
+    sudo service supervisor start
+    sudo bash -c 'cat <<EOF> ./
+    [program:yummyrecipes]
+    directory=/home/ubuntu/Devops/Yummy-Recipes-Api
+    command=/home/ubuntu/Devops/my_env/bin/gunicorn -w 4 -b 0.0.0.0:5000 -D app:app
+    autostart=true
+    autorestart=true
+    stderr_logfile=/var/log/Yummy-Recipes-Api/yummyrecipes.err.log
+    stdout_logfile=/var/log/Yummy-Recipes-Api/yummyrecipes.out.log
+EOF'
 }
 exportDatabaseUrl(){
     printf "********************Exporting DATABASE_URL****************** \n"
@@ -110,7 +113,8 @@ exportDatabaseUrl(){
 }
 startApp(){
     printf "*******************Starting App*************************** \n"
-    gunicorn -w 4 -b 0.0.0.0:5000 -D app:app
+    sudo supervisorctl reread
+    sudo service supervisor restart
 }
 
 run(){
