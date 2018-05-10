@@ -99,7 +99,7 @@ configureSSH(){
 }
 configureSupervisor(){
     printf "***********************Installing Supervisor*************** \n"
-    pip install supervisor
+    sudo apt install supervisor
     #sudo apt-get install supervisor
     echo_supervisord_conf > supervisord.conf
 
