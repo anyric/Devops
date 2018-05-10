@@ -72,23 +72,24 @@ configureNginx(){
     sudo bash -c 'cat <<EOF> /etc/nginx/sites-available/default
     server {
             listen 80;
+            server_name anyric.tk;
             location / {
-                    proxy_pass http://127.0.0.1:8000/;
-                    proxy_set_header HOST \$host;
-                    proxy_set_header X-Forwarded-Proto \$scheme;
-                    proxy_set_header X-Real-IP \$remote_addr;
-                    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                    proxy_pass http://127.0.0.1:5000;
+                    # proxy_set_header HOST \$host;
+                    # proxy_set_header X-Forwarded-Proto \$scheme;
+                    # proxy_set_header X-Real-IP \$remote_addr;
+                    # proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
             }
     }
 EOF'
 }
 
 restartNginx(){
-    printf "*******************Restarting Nginx************************ \n"
+    printf "*******************Restarting Nginx********************** \n"
     sudo systemctl restart nginx
 }
 
-configSSH(){
+configureSSH(){
     printf "********************Configuring SSH****************** \n"
     sudo apt-get install -y software-properties-common
     sudo add-apt-repository ppa:certbot/certbot
@@ -96,8 +97,15 @@ configSSH(){
     sudo apt-get install -y python-certbot-nginx
     sudo certbot --nginx 
 }
+configureSupervisor(){
+    printf "***********************Installing Supervisor*************** \n"
+    pip install supervisor
+    #sudo apt-get install supervisor
+    echo_supervisord_conf > supervisord.conf
+
+}
 exportDatabaseUrl(){
-    printf "********************Export DATABASE_URL****************** \n"
+    printf "********************Exporting DATABASE_URL****************** \n"
     export DATABASE_URL="postgres://postgres:postgres1234@postgresdb.cztrtf3jyreo.us-east-2.rds.amazonaws.com:5432/yummy_api"
 }
 startApp(){
@@ -118,7 +126,7 @@ run(){
     createWsgiEntryPoint
     startNginx
     configureNginx
-    configSSH
+    configureSSH
     restartNginx
     exportDatabaseUrl
     startApp
