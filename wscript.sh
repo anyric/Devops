@@ -116,6 +116,7 @@ startApp(){
     printf "*******************Starting App*************************** \n"
     sudo supervisorctl reread
     sudo supervisorctl update
+    sudo supervisorctl start process:*
 }
 
 run(){
