@@ -72,10 +72,9 @@ configureNginx(){
             listen 80;
             location / {
                     proxy_pass http://localhost:5000;
-                    proxy_set_header HOST $host;
-                    proxy_set_header X-Forwarded-Proto $scheme;
-                    proxy_set_header X-Real-IP $remote_addr;
                     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                    proxy_set_header X-Real-IP $remote_addr;
+                    proxy_set_header Host $http_host;
             }
     }
 EOF'
@@ -98,7 +97,6 @@ configureSSH(){
 configureSupervisor(){
     printf "***********************Installing Supervisor*************** \n"
     sudo apt-get install -y supervisor
-    sudo service supervisor restart
     sudo bash -c 'cat <<EOF> /etc/supervisor/conf.d/supervisord.conf
 [program:yummyrecipes]
 command=/home/ubuntu/Devops/my_env/bin/gunicorn -w 4 -b 0.0.0.0:5000 app:app
@@ -106,8 +104,6 @@ autostart=true
 autorestart=true
 stderr_logfile=/var/log/Yummy-Recipes-Api/yummyrecipes.err.log
 stdout_logfile=/var/log/Yummy-Recipes-Api/yummyrecipes.out.log
-[inet_http_server]
-port = 0.0.0.0:5000
 EOF'
 }
 exportDatabaseUrl(){
@@ -118,7 +114,6 @@ startApp(){
     printf "*******************Starting App*************************** \n"
     sudo supervisorctl reread
     sudo supervisorctl update
-    sudo supervisorctl start yummyrecipes
 }
 
 run(){
