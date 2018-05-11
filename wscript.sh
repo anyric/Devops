@@ -71,7 +71,7 @@ configureNginx(){
     server {
             listen 80;
             location / {
-                    proxy_pass http://0.0.0.0:5000;
+                    proxy_pass http://localhost:5000;
                     proxy_set_header HOST $host;
                     proxy_set_header X-Forwarded-Proto $scheme;
                     proxy_set_header X-Real-IP $remote_addr;
@@ -121,6 +121,7 @@ exportDatabaseUrl(){
 }
 startApp(){
     printf "*******************Starting App*************************** \n"
+    sudo service supervisor start
     sudo supervisorctl reread
     sudo service supervisor restart
 }
