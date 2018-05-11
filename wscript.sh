@@ -96,8 +96,7 @@ configureSSH(){
 }
 configureSupervisor(){
     printf "***********************Installing Supervisor*************** \n"
-    sudo apt install -y supervisor
-    sudo service supervisor start
+    sudo apt-get install -y supervisor
     sudo bash -c 'cat <<EOF> ./supervisord.conf
 [program:yummyrecipes]
 directory=/home/ubuntu/Devops/Yummy-Recipes-Api
@@ -121,7 +120,8 @@ exportDatabaseUrl(){
 }
 startApp(){
     printf "*******************Starting App*************************** \n"
-    sudo service supervisord start
+    sudo systemctl enable supervisor
+    sudo systemctl start supervisor
     sudo supervisorctl reread
 }
 
