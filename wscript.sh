@@ -83,7 +83,8 @@ EOF'
 
 restartNginx(){
     printf "*******************Restarting Nginx********************** \n"
-    sudo systemctl restart nginx
+    sudo nginx -t
+    sudo service nginx restart
 }
 
 configureSSH(){
@@ -105,7 +106,8 @@ autostart=true
 autorestart=true
 stderr_logfile=/var/log/Yummy-Recipes-Api/yummyrecipes.err.log
 stdout_logfile=/var/log/Yummy-Recipes-Api/yummyrecipes.out.log
-
+[inet_http_server]
+port = 0.0.0.0:5000
 EOF'
 }
 exportDatabaseUrl(){
@@ -116,7 +118,7 @@ startApp(){
     printf "*******************Starting App*************************** \n"
     sudo supervisorctl reread
     sudo supervisorctl update
-    sudo supervisorctl start process:*
+    sudo supervisorctl start yummyrecipes
 }
 
 run(){
