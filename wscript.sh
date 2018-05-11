@@ -74,7 +74,7 @@ server {
 
         location / {
             include proxy_params;
-            proxy_pass http://unix:/home/ubuntu/ Yummy-Recipes-Api/yummy.sock;
+            proxy_pass http://unix:/home/ubuntu/Yummy-Recipes-Api/yummy.sock;
         }
 }
 EOF'
