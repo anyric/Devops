@@ -61,6 +61,7 @@ EOF'
 
 startNginx(){
     printf "******************Starting Nginx************************** \n"
+    sudo systemctl stop nginx
     sudo systemctl start nginx
     sudo systemctl enable nginx
 }
@@ -72,7 +73,7 @@ configureNginx(){
     sudo bash -c 'cat <<EOF> /etc/nginx/sites-available/yummy
 server {
         listen 80;
-        listen [::]:80 ipv6only=on default_server;
+        listen [::]:80;
 
         server_name anyric.tk www.anyric.tk;
 
