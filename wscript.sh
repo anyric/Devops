@@ -72,10 +72,11 @@ configureNginx(){
             listen 80;
             server_name anyric.tk
             location / {
-                    proxy_pass http://127.0.0.1:8000/;
-                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                    proxy_set_header X-Real-IP $remote_addr;
-                    proxy_set_header Host $http_host;
+                proxy_pass http://0.0.0.0:5000/;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header Host $http_host;
+                return 301 /apidocs/;
             }
     }
 EOF'
@@ -113,8 +114,7 @@ exportDatabaseUrl(){
 }
 startApp(){
     printf "*******************Starting App*************************** \n"
-    sudo supervisorctl reread
-    sudo supervisorctl update
+    sudo service supervisor restart
 }
 
 run(){
