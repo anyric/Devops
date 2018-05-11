@@ -23,7 +23,7 @@ installNginxGunicorn(){
     printf "*********************Installing Nginx******************************* \n"
     sudo apt-get purge -y nginx nginx-common
     sudo apt-get purge -y --auto-remove gunicorn
-    sudo apt-get install nginx gunicorn
+    sudo apt-get install -y nginx gunicorn
 }
 
 setupVirtualenv(){
@@ -73,7 +73,7 @@ configureNginx(){
     sudo bash -c 'cat <<EOF> /etc/nginx/sites-available/yummy
 server {
         listen 80;
-        listen [::]:80 default_server;
+        listen [::]:80 ipv6only=on default_server;
         server_name anyric.tk;
 
         location / {
