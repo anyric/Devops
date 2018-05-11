@@ -89,8 +89,8 @@ restartNginx(){
     sudo ln -s /etc/nginx/sites-available/yummy /etc/nginx/sites-enabled
     sudo nginx -t
     sudo systemctl restart nginx
-    sudo ufw delete allow 5000
-    sudo ufw allow 'Nginx Full'
+    # sudo ufw delete allow 5000
+    # sudo ufw allow 'Nginx Full'
 }
 
 configureSSH(){
