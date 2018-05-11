@@ -23,7 +23,6 @@ installNginxGunicorn(){
     printf "*********************Installing Nginx******************************* \n"
     sudo apt-get install nginx gunicorn
 }
-#create Virtualenv
 setupVirtualenv(){
     printf "******************Setting up virtualenv******************* \n"
     sudo apt-get install -y virtualenv
@@ -37,7 +36,6 @@ cloneRepo(){
 
 activateVirtualenv(){
     printf "*****************Activation virtualenv**************** \n"
-    #activate virtualenv
     source my_env/bin/activate
 
 }
@@ -101,8 +99,10 @@ configureSupervisor(){
 [program:yummyrecipes]
 directory=/home/ubuntu/Devops/Yummy-Recipes-Api
 command=/home/ubuntu/Devops/my_env/bin/gunicorn -w 4 -b 0.0.0.0:5000 -D app:app
+user=ubuntu
 autostart=true
 autorestart=true
+redirect_stderr=true
 stderr_logfile=/var/log/Yummy-Recipes-Api/yummyrecipes.err.log
 stdout_logfile=/var/log/Yummy-Recipes-Api/yummyrecipes.out.log
 
@@ -121,16 +121,16 @@ startApp(){
 run(){
     updateServer
     exportLang
+    setupVirtualenv
+    activateVirtualenv
     installPython
     installNginxGunicorn
-    setupVirtualenv
     cloneRepo
-    activateVirtualenv
     setupProjectDependancies
     setupHostIP
     startNginx
     configureNginx
-    #configureSSH
+    configureSSH
     configureSupervisor
     restartNginx
     exportDatabaseUrl
