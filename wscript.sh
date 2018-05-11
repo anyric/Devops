@@ -121,9 +121,8 @@ exportDatabaseUrl(){
 }
 startApp(){
     printf "*******************Starting App*************************** \n"
-    sudo service supervisor start
+    sudo service supervisord start
     sudo supervisorctl reread
-    sudo service supervisor restart
 }
 
 run(){
