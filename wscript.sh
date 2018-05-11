@@ -97,21 +97,15 @@ configureSSH(){
 configureSupervisor(){
     printf "***********************Installing Supervisor*************** \n"
     sudo apt-get install -y supervisor
-    sudo bash -c 'cat <<EOF> ./supervisord.conf
+    sudo service supervisor restart
+    sudo bash -c 'cat <<EOF> /etc/supervisor/conf.d/supervisord.conf
 [program:yummyrecipes]
-directory=/home/ubuntu/Devops/Yummy-Recipes-Api
 command=/home/ubuntu/Devops/my_env/bin/gunicorn -w 4 -b 0.0.0.0:5000 app:app
-user=ubuntu
 autostart=true
 autorestart=true
-redirect_stderr=true
 stderr_logfile=/var/log/Yummy-Recipes-Api/yummyrecipes.err.log
 stdout_logfile=/var/log/Yummy-Recipes-Api/yummyrecipes.out.log
 
-[supervisord]
-nodaemon=false
-
-[supervisorctl]
 EOF'
 }
 exportDatabaseUrl(){
@@ -120,9 +114,8 @@ exportDatabaseUrl(){
 }
 startApp(){
     printf "*******************Starting App*************************** \n"
-    sudo systemctl enable supervisor
-    sudo systemctl start supervisor
     sudo supervisorctl reread
+    sudo supervisorctl update
 }
 
 run(){
