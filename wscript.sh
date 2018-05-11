@@ -21,6 +21,8 @@ installPython(){
 
 installNginxGunicorn(){
     printf "*********************Installing Nginx******************************* \n"
+    sudo apt-get purge -y nginx nginx-common
+    sudo apt-get purge -y --auto-remove gunicorn
     sudo apt-get install nginx gunicorn
 }
 
@@ -67,9 +69,11 @@ startNginx(){
 configureNginx(){
     printf "******************Configuring Nginx*********************** \n"
     sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+    sudo rm -rf /etc/nginx/sites-available/yummy /etc/nginx/sites-enabled/yummy
     sudo bash -c 'cat <<EOF> /etc/nginx/sites-available/yummy
 server {
         listen 80;
+        listen [::]:80 default_server;
         server_name anyric.tk;
 
         location / {
@@ -126,7 +130,6 @@ startApp(){
     printf "*******************Starting App*************************** \n"
     sudo systemctl start yummy
     sudo systemctl enable yummy
-    sudo systemctl daemon-reload
 }
 
 run(){
