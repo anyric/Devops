@@ -74,6 +74,8 @@ configureNginx(){
 server {
         listen 80;
         listen [::]:80 ipv6only=on default_server;
+        listen 443 ssl;
+        listen [::]:443 ssl;
         server_name anyric.tk;
 
         location / {
