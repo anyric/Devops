@@ -23,6 +23,7 @@ installNginxGunicorn(){
     printf "*********************Installing Nginx******************************* \n"
     sudo apt-get install nginx gunicorn
 }
+
 setupVirtualenv(){
     printf "******************Setting up virtualenv******************* \n"
     sudo apt-get install -y virtualenv
@@ -65,27 +66,27 @@ startNginx(){
 
 configureNginx(){
     printf "******************Configuring Nginx*********************** \n"
-    sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+    
+    sudo bash -c 'cat <<EOF> /etc/nginx/sites-available/yummy
+server {
+        listen 80;
+        server_name anyric.tk;
 
-    sudo bash -c 'cat <<EOF> /etc/nginx/sites-available/default
-    server {
-            listen 80;
-            server_name anyric.tk
-            location / {
-                proxy_pass http://0.0.0.0:5000/;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header Host $http_host;
-                return 301 /apidocs/;
-            }
-    }
+        location / {
+            include proxy_params;
+            proxy_pass http://unix:/home/ubuntu/ Yummy-Recipes-Api/yummy.sock;
+        }
+}
 EOF'
 }
 
 restartNginx(){
     printf "*******************Restarting Nginx********************** \n"
+    sudo ln -s /etc/nginx/sites-available/yummy /etc/nginx/sites-enabled
     sudo nginx -t
-    sudo service nginx restart
+    sudo systemctl restart nginx
+    sudo ufw delete allow 5000
+    sudo ufw allow 'Nginx Full'
 }
 
 configureSSH(){
@@ -96,25 +97,35 @@ configureSSH(){
     sudo apt-get install -y python-certbot-nginx
     sudo certbot --nginx 
 }
-configureSupervisor(){
-    printf "***********************Installing Supervisor*************** \n"
-    sudo apt-get install -y supervisor
-    sudo bash -c 'cat <<EOF> /etc/supervisor/conf.d/supervisord.conf
-[program:yummyrecipes]
-command=/home/ubuntu/Devops/my_env/bin/gunicorn -w 4 -b 0.0.0.0:5000 app:app
-autostart=true
-autorestart=true
-stderr_logfile=/var/log/Yummy-Recipes-Api/yummyrecipes.err.log
-stdout_logfile=/var/log/Yummy-Recipes-Api/yummyrecipes.out.log
+
+configureSystemd(){
+    printf "***********************Configuring Systemd*************** \n"
+    sudo bash -c 'cat <<EOF> /etc/systemd/system/yummy.service
+[Unit]
+Description=Gunicorn instance to serve yummy recipe
+After=network.target
+
+[Service]
+User=sammy
+Group=www-data
+WorkingDirectory=/home/ubuntu/Yummy-Recipes-Api
+Environment="PATH=/home/ubuntu/Yummy-Recipes-Api/my_env/bin"
+ExecStart=/home/ubuntu/Yummy-Recipes-Api/my_env/bin/gunicorn --workers 4 --bind unix:yummy.sock -m 007 app:app
+
+[Install]
+WantedBy=multi-user.target
+
 EOF'
 }
 exportDatabaseUrl(){
     printf "********************Exporting DATABASE_URL****************** \n"
     export DATABASE_URL="postgres://postgres:postgres1234@postgresdb.cztrtf3jyreo.us-east-2.rds.amazonaws.com:5432/yummy_api"
 }
+
 startApp(){
     printf "*******************Starting App*************************** \n"
-    sudo service supervisor restart
+    sudo systemctl start app
+    sudo systemctl enable app
 }
 
 run(){
@@ -130,7 +141,7 @@ run(){
     startNginx
     configureNginx
     configureSSH
-    configureSupervisor
+    configureSystemd
     restartNginx
     exportDatabaseUrl
     startApp
