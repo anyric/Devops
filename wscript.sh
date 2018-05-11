@@ -70,9 +70,12 @@ configureNginx(){
     sudo bash -c 'cat <<EOF> /etc/nginx/sites-available/default
     server {
             listen 80;
-            server_name anyric.tk;
             location / {
-                    proxy_pass http://127.0.0.1:5000;
+                    proxy_pass http://0.0.0.0:5000;
+                    proxy_set_header HOST $host;
+                    proxy_set_header X-Forwarded-Proto $scheme;
+                    proxy_set_header X-Real-IP $remote_addr;
+                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             }
     }
 EOF'
@@ -98,7 +101,7 @@ configureSupervisor(){
     sudo bash -c 'cat <<EOF> ./supervisord.conf
 [program:yummyrecipes]
 directory=/home/ubuntu/Devops/Yummy-Recipes-Api
-command=/home/ubuntu/Devops/my_env/bin/gunicorn -w 4 -b 0.0.0.0:5000 -D app:app
+command=/home/ubuntu/Devops/my_env/bin/gunicorn -w 4 -b 0.0.0.0:5000 app:app
 user=ubuntu
 autostart=true
 autorestart=true
