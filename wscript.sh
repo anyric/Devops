@@ -66,7 +66,7 @@ startNginx(){
 
 configureNginx(){
     printf "******************Configuring Nginx*********************** \n"
-    
+    sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
     sudo bash -c 'cat <<EOF> /etc/nginx/sites-available/yummy
 server {
         listen 80;
@@ -126,6 +126,7 @@ startApp(){
     printf "*******************Starting App*************************** \n"
     sudo systemctl start yummy
     sudo systemctl enable yummy
+    sudo systemctl daemon-reload
 }
 
 run(){
