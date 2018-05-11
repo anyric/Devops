@@ -21,8 +21,6 @@ installPython(){
 
 installNginxGunicorn(){
     printf "*********************Installing Nginx******************************* \n"
-    sudo apt-get purge -y nginx nginx-common
-    sudo apt-get purge -y --auto-remove gunicorn
     sudo apt-get install -y nginx gunicorn
 }
 
@@ -64,6 +62,7 @@ EOF'
 startNginx(){
     printf "******************Starting Nginx************************** \n"
     sudo systemctl start nginx
+    sudo systemctl enable nginx
 }
 
 configureNginx(){
@@ -88,8 +87,6 @@ EOF'
 restartNginx(){
     printf "*******************Restarting Nginx********************** \n"
     sudo ln -s /etc/nginx/sites-available/yummy /etc/nginx/sites-enabled
-    sudo systemctl stop nginx
-    sudo systemctl restart nginx
     sudo ufw allow 'Nginx Full'
     sudo ufw delete allow 'Nginx HTTP'
 }
@@ -131,6 +128,12 @@ startApp(){
     printf "*******************Starting App*************************** \n"
     sudo systemctl start yummy
     sudo systemctl enable yummy
+
+    sudo mkdir /etc/systemd/system/nginx.service.d
+    printf "[Service]\nExecStartPost=/bin/sleep 0.1\n" > override.conf
+    sudo mv override.conf /etc/systemd/system/nginx.service.d/override.conf
+    sudo systemctl daemon-reload
+    sudo systemctl restart nginx
 }
 
 run(){
