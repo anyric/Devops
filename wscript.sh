@@ -109,6 +109,10 @@ redirect_stderr=true
 stderr_logfile=/var/log/Yummy-Recipes-Api/yummyrecipes.err.log
 stdout_logfile=/var/log/Yummy-Recipes-Api/yummyrecipes.out.log
 
+[supervisord]
+nodaemon=false
+
+[supervisorctl]
 EOF'
 }
 exportDatabaseUrl(){
