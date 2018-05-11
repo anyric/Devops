@@ -124,8 +124,8 @@ exportDatabaseUrl(){
 
 startApp(){
     printf "*******************Starting App*************************** \n"
-    sudo systemctl start app
-    sudo systemctl enable app
+    sudo systemctl start yummy
+    sudo systemctl enable yummy
 }
 
 run(){
