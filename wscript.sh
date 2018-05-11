@@ -74,9 +74,8 @@ configureNginx(){
 server {
         listen 80;
         listen [::]:80 ipv6only=on default_server;
-        listen 443 ssl;
-        listen [::]:443 ssl;
-        server_name anyric.tk;
+
+        server_name anyric.tk www.anyric.tk;
 
         location / {
             include proxy_params;
@@ -89,10 +88,10 @@ EOF'
 restartNginx(){
     printf "*******************Restarting Nginx********************** \n"
     sudo ln -s /etc/nginx/sites-available/yummy /etc/nginx/sites-enabled
-    sudo nginx -t
+    sudo systemctl stop nginx
     sudo systemctl restart nginx
-    # sudo ufw delete allow 5000
-    # sudo ufw allow 'Nginx Full'
+    sudo ufw allow 'Nginx Full'
+    sudo ufw delete allow 'Nginx HTTP'
 }
 
 configureSSH(){
