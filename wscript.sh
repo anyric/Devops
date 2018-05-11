@@ -70,6 +70,7 @@ configureNginx(){
     sudo bash -c 'cat <<EOF> /etc/nginx/sites-available/default
     server {
             listen 80;
+            server_name anyric.tk
             location / {
                     proxy_pass http://localhost:5000;
                     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
