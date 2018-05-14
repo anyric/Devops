@@ -37,7 +37,7 @@ cloneRepo(){
 setupProjectDependancies(){
     printf "*******************Installing requirements.txt************* \n"
     cd Yummy-Recipes-Api
-    pip3 install -r requirements.txt
+    pip3.6 install -r requirements.txt
 }
 
 setupHostIP(){
