@@ -132,7 +132,7 @@ startApp(){
     sudo systemctl enable yummy
     sudo systemctl restart yummy
     
-
+}
 run(){
     updateServer
     exportLang
