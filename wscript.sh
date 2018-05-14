@@ -114,6 +114,8 @@ PIDFile=/tmp/gunicorn.pid
 WorkingDirectory=/home/ubuntu/Yummy-Recipes-Api
 Environment="PATH=/home/ubuntu/Yummy-Recipes-Api/my_env/bin"
 ExecStart=/home/ubuntu/Yummy-Recipes-Api/my_env/bin/gunicorn --workers 4 --bind localhost:5000 app:app
+ExecReload = /bin/kill -s HUP $MAINPID
+ExecStop = /bin/kill -s TERM $MAINPID
 
 [Install]
 WantedBy=multi-user.target
@@ -127,6 +129,7 @@ exportDatabaseUrl(){
 
 startApp(){
     printf "*******************Starting App*************************** \n"
+    sudo chmod 755 /etc/systemd/system/yummy.service
     sudo systemctl daemon-reload
     sudo systemctl start yummy
     sudo systemctl enable yummy
