@@ -103,6 +103,7 @@ After=network.target
 User=ubuntu
 ExecStart=/home/ubuntu/Devops/Yummy-Recipes-Api/venv/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
 Restart=always
+
 [Install]
 WantedBy=multi-user.target
 
@@ -117,9 +118,8 @@ startApp(){
     printf "*******************Starting App*************************** \n"
     sudo chmod 755 /etc/systemd/system/yummy.service
     sudo systemctl daemon-reload
-    sudo systemctl start yummy
     sudo systemctl enable yummy
-    sudo systemctl restart yummy
+    sudo systemctl start yummy
     
 }
 run(){
