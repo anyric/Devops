@@ -101,6 +101,8 @@ After=network.target
 
 [Service]
 User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/Devops/Yummy-Recipes-Api
 ExecStart=/home/ubuntu/Devops/Yummy-Recipes-Api/venv/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
 Restart=always
 
