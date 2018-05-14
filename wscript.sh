@@ -104,13 +104,14 @@ configureSSH(){
 
 configureSystemd(){
     printf "***********************Configuring Systemd*************** \n"
+    sudo rm -rf /etc/systemd/system/yummy.service
     sudo bash -c 'cat <<EOF> /etc/systemd/system/yummy.service
 [Unit]
 Description=Gunicorn instance to serve yummy recipe
 After=network.target
 
 [Service]
-User=sammy
+User=ubuntu
 Group=www-data
 WorkingDirectory=/home/ubuntu/Yummy-Recipes-Api
 Environment="PATH=/home/ubuntu/Yummy-Recipes-Api/my_env/bin"
