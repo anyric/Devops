@@ -131,6 +131,7 @@ startApp(){
     # sudo systemctl start yummy
     # sudo systemctl enable yummy
     # sudo systemctl restart yummy
+    sudo rm -rf /etc/systemd/system/yummy.service
     sudo gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
 }
 
@@ -147,7 +148,7 @@ run(){
     configureNginx
     configureSSH
     startNginx
-    configureSystemd
+    # configureSystemd
     restartNginx
     exportDatabaseUrl
     startApp
