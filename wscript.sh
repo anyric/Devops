@@ -16,7 +16,6 @@ installPython(){
     printf '**********************Installing Python 3.6 and dependancies***************** \n'
     sudo apt-get install -y python=3.6
     sudo apt-get install -y python3-pip  
-    sudo apt-get install uwsgi-plugin-python
 }
 
 installNginxGunicorn(){
