@@ -37,7 +37,7 @@ cloneRepo(){
 setupProjectDependancies(){
     printf "*******************Installing requirements.txt************* \n"
     cd Yummy-Recipes-Api
-    pip install -r requirements.txt
+    pip3 install -r requirements.txt
 }
 
 setupHostIP(){
@@ -59,6 +59,7 @@ startNginx(){
 
 configureNginx(){
     printf "******************Configuring Nginx*********************** \n"
+    sudo rm -rf /etc/nginx/sites-available/yummy /etc/nginx/sites-enabled/yummy
     sudo bash -c 'cat <<EOF> /etc/nginx/sites-available/yummy
 server {
         listen 80;
