@@ -71,16 +71,13 @@ configureNginx(){
     sudo bash -c 'cat <<EOF> /etc/nginx/sites-available/yummy
 server {
         listen 80 default_server;
-        listen [::]:80 ipv6only=on;
+        listen [::]:80 ;
 
-        server_name ;
+        server_name anyric.tk www.anyric.tk;
 
         location / {
-            proxy_pass http://127.0.0.1:8000;
-            proxy_set_header HOST $host;
-            proxy_set_header X-Forwarded-Proto $scheme;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_pass http://localhost:5000;
+            
         }
 }
 EOF'
@@ -113,9 +110,10 @@ After=network.target
 [Service]
 User=ubuntu
 Group=www-data
+PIDFile=/tmp/gunicorn.pid
 WorkingDirectory=/home/ubuntu/Yummy-Recipes-Api
 Environment="PATH=/home/ubuntu/Yummy-Recipes-Api/my_env/bin"
-ExecStart=/home/ubuntu/Yummy-Recipes-Api/my_env/bin/gunicorn --workers 4 --bind unix:yummy.sock -m 007 app:app
+ExecStart=/home/ubuntu/Yummy-Recipes-Api/my_env/bin/gunicorn --workers 4 --bind localhost:5000 app:app
 
 [Install]
 WantedBy=multi-user.target
@@ -132,6 +130,7 @@ startApp(){
     sudo systemctl daemon-reload
     sudo systemctl start yummy
     sudo systemctl enable yummy
+    sudo systemctl restart yummy
 }
 
 run(){
