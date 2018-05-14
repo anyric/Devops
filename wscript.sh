@@ -105,6 +105,8 @@ Group=www-data
 WorkingDirectory=/home/ubuntu/Devops/Yummy-Recipes-Api
 ExecStart=/home/ubuntu/Devops/Yummy-Recipes-Api/venv/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
 Restart=always
+RestartSec=10
+TimeoutStartSec=5min
 
 [Install]
 WantedBy=multi-user.target
