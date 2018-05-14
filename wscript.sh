@@ -128,6 +128,7 @@ exportDatabaseUrl(){
 
 startApp(){
     printf "*******************Starting App*************************** \n"
+    sudo systemctl daemon-reload
     sudo systemctl start yummy
     sudo systemctl enable yummy
 }
