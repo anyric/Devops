@@ -72,7 +72,7 @@ server {
         listen 80 default_server;
         listen [::]:80 ;
 
-        server_name _;
+        server_name anyric.tk www.anyric.tk;
 
         location / {
             proxy_pass http://127.0.0.1:5000;
