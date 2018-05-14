@@ -27,7 +27,7 @@ installNginxGunicorn(){
 setupVirtualenv(){
     printf "******************Setting up virtualenv******************* \n"
     sudo apt-get install -y virtualenv
-    virtualenv -p /usr/bin/python3 my_env
+    virtualenv -p /usr/bin/python3 venv
 }
 
 cloneRepo(){
@@ -37,7 +37,7 @@ cloneRepo(){
 
 activateVirtualenv(){
     printf "*****************Activation virtualenv**************** \n"
-    source my_env/bin/activate
+    source venv/bin/activate
 
 }
 
@@ -111,8 +111,8 @@ User=ubuntu
 Group=www-data
 PIDFile=/tmp/gunicorn.pid
 WorkingDirectory=/home/ubuntu/Yummy-Recipes-Api/
-Environment="PATH=/home/ubuntu/Yummy-Recipes-Api/my_env/bin"
-ExecStart=/home/ubuntu/Yummy-Recipes-Api/my_env/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
+Environment="PATH=/home/ubuntu/Yummy-Recipes-Api/venv/bin"
+ExecStart=/home/ubuntu/Yummy-Recipes-Api/venv/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
 
 [Install]
 WantedBy=multi-user.target
