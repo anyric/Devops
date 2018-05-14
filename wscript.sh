@@ -114,7 +114,7 @@ User=sammy
 Group=www-data
 WorkingDirectory=/home/ubuntu/Yummy-Recipes-Api
 Environment="PATH=/home/ubuntu/Yummy-Recipes-Api/my_env/bin"
-ExecStart=/home/ubuntu/Yummy-Recipes-Api/my_env/bin/gunicorn --workers 4 --bind unix:yummy.sock -m 007 app:app
+ExecStart=/home/ubuntu/Yummy-Recipes-Api/my_env/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
 
 [Install]
 WantedBy=multi-user.target
