@@ -76,7 +76,7 @@ server {
         server_name anyric.tk www.anyric.tk;
 
         location / {
-            proxy_pass http://localhost:5000;
+            proxy_pass http://0.0.0.0:5000;
             
         }
 }
@@ -111,11 +111,9 @@ After=network.target
 User=ubuntu
 Group=www-data
 PIDFile=/tmp/gunicorn.pid
-WorkingDirectory=/home/ubuntu/Yummy-Recipes-Api
+WorkingDirectory=/home/ubuntu/Yummy-Recipes-Api/
 Environment="PATH=/home/ubuntu/Yummy-Recipes-Api/my_env/bin"
-ExecStart=/home/ubuntu/Yummy-Recipes-Api/my_env/bin/gunicorn --workers 4 --bind localhost:5000 app:app
-ExecReload = /bin/kill -s HUP $MAINPID
-ExecStop = /bin/kill -s TERM $MAINPID
+ExecStart=/home/ubuntu/Yummy-Recipes-Api/my_env/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
 
 [Install]
 WantedBy=multi-user.target
