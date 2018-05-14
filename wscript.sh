@@ -65,26 +65,20 @@ startNginx(){
 
 configureNginx(){
     printf "******************Configuring Nginx*********************** \n"
-    sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-    sudo rm -rf /etc/nginx/sites-available/yummy /etc/nginx/sites-enabled/yummy
     sudo bash -c 'cat <<EOF> /etc/nginx/sites-available/yummy
 server {
-        listen 80 default_server;
-        listen [::]:80 ;
-
-        server_name anyric.tk www.anyric.tk;
-
+        listen 80;
         location / {
-            proxy_pass http://127.0.0.1:5000;
-            
+            proxy_pass http://127.0.0.1:8000/;
+            proxy_set_header Host \$host;
+            proxy_set_header X-Forwarded-Proto \$scheme;
+            proxy_set_header X-Real-IP \$remote_addr;
+            proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         }
 }
 EOF'
-}
-
-restartNginx(){
-    printf "*******************Restarting Nginx********************** \n"
-    sudo ln -s /etc/nginx/sites-available/yummy /etc/nginx/sites-enabled
+    sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+    sudo ln -s /etc/nginx/sites-available/yummy /etc/nginx/sites-enabled/
     sudo ufw allow 'Nginx Full'
 }
 
@@ -107,12 +101,8 @@ After=network.target
 
 [Service]
 User=ubuntu
-Group=www-data
-PIDFile=/tmp/gunicorn.pid
-WorkingDirectory=/home/ubuntu/Devops/Yummy-Recipes-Api
-Environment="PATH=/home/ubuntu/Devops/Yummy-Recipes-Api/venv/bin"
 ExecStart=/home/ubuntu/Devops/Yummy-Recipes-Api/venv/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
-
+Restart=always
 [Install]
 WantedBy=multi-user.target
 
@@ -146,7 +136,6 @@ run(){
     configureSSH
     startNginx
     configureSystemd
-    restartNginx
     exportDatabaseUrl
     startApp
 }
