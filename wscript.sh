@@ -76,7 +76,7 @@ server {
         server_name _;
 
         location / {
-            proxy_pass http://0.0.0.0:5000;
+            proxy_pass http://127.0.0.1:5000;
             
         }
 }
@@ -126,14 +126,12 @@ exportDatabaseUrl(){
 
 startApp(){
     printf "*******************Starting App*************************** \n"
-    # sudo chmod 755 /etc/systemd/system/yummy.service
-    # sudo systemctl daemon-reload
-    # sudo systemctl start yummy
-    # sudo systemctl enable yummy
-    # sudo systemctl restart yummy
-    sudo rm -rf /etc/systemd/system/yummy.service
-    sudo gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
-}
+  
+    sudo systemctl daemon-reload
+    sudo systemctl start yummy
+    sudo systemctl enable yummy
+    sudo systemctl restart yummy
+    
 
 run(){
     updateServer
@@ -148,7 +146,7 @@ run(){
     configureNginx
     configureSSH
     startNginx
-    # configureSystemd
+    configureSystemd
     restartNginx
     exportDatabaseUrl
     startApp
