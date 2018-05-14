@@ -120,10 +120,11 @@ exportDatabaseUrl(){
 
 startApp(){
     printf "*******************Starting App*************************** \n"
-    sudo chmod 755 /etc/systemd/system/yummy.service
-    sudo systemctl daemon-reload
-    sudo systemctl enable yummy
-    sudo systemctl start yummy
+    # sudo chmod 755 /etc/systemd/system/yummy.service
+    # sudo systemctl daemon-reload
+    # sudo systemctl enable yummy
+    # sudo systemctl start yummy
+    sudo gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
     
 }
 run(){
@@ -139,7 +140,7 @@ run(){
     configureNginx
     configureSSH
     startNginx
-    configureSystemd
+    # configureSystemd
     exportDatabaseUrl
     startApp
 }
