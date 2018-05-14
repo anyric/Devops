@@ -103,7 +103,7 @@ After=network.target
 User=ubuntu
 Group=www-data
 WorkingDirectory=/home/ubuntu/Devops/Yummy-Recipes-Api
-ExecStart=/bin/bash /home/ubuntu/Devops/Yummy-Recipes-Api/venv/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
+ExecStart=/home/ubuntu/Devops/Yummy-Recipes-Api/venv/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
 Restart=always
 RestartSec=10
 TimeoutStartSec=5min
@@ -120,11 +120,10 @@ exportDatabaseUrl(){
 
 startApp(){
     printf "*******************Starting App*************************** \n"
-    # sudo chmod 755 /etc/systemd/system/yummy.service
-    # sudo systemctl daemon-reload
-    # sudo systemctl enable yummy
-    # sudo systemctl start yummy
-    sudo gunicorn --workers 4 --bind localhost:5000 app:app
+    sudo chmod 755 /etc/systemd/system/yummy.service
+    sudo systemctl daemon-reload
+    sudo systemctl enable yummy
+    sudo systemctl start yummy
     
 }
 run(){
@@ -140,7 +139,7 @@ run(){
     configureNginx
     configureSSH
     startNginx
-    # configureSystemd
+    configureSystemd
     exportDatabaseUrl
     startApp
 }
