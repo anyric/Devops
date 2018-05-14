@@ -109,9 +109,9 @@ After=network.target
 User=ubuntu
 Group=www-data
 PIDFile=/tmp/gunicorn.pid
-WorkingDirectory=/home/ubuntu/Yummy-Recipes-Api/
-Environment="PATH=/home/ubuntu/Yummy-Recipes-Api/venv/bin"
-ExecStart=/home/ubuntu/Yummy-Recipes-Api/venv/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
+WorkingDirectory=/home/ubuntu/Devops/Yummy-Recipes-Api/
+Environment="PATH=/home/ubuntu/Devops/Yummy-Recipes-Api/venv/bin"
+ExecStart=/home/ubuntu/Devops/Yummy-Recipes-Api/venv/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
 
 [Install]
 WantedBy=multi-user.target
