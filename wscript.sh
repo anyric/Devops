@@ -124,7 +124,7 @@ startApp(){
     # sudo systemctl daemon-reload
     # sudo systemctl enable yummy
     # sudo systemctl start yummy
-    sudo gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
+    sudo gunicorn --workers 4 --bind localhost:5000 app:app
     
 }
 run(){
