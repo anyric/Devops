@@ -34,12 +34,6 @@ cloneRepo(){
     git clone https://github.com/anyric/Yummy-Recipes-Api.git
 }
 
-activateVirtualenv(){
-    printf "*****************Activation virtualenv**************** \n"
-    source venv/bin/activate
-
-}
-
 setupProjectDependancies(){
     printf "*******************Installing requirements.txt************* \n"
     cd Yummy-Recipes-Api
@@ -91,6 +85,20 @@ configureSSH(){
     sudo certbot --nginx 
 }
 
+setupYummy(){
+    printf "***********************Setting yummy exec*************** \n"
+    sudo bash -c 'cat <<EOF> /home/ubuntu/Devops/Yummy-Recipes-Api/yummy.sh
+#!/bin/bash
+
+cd /home/ubuntu/Devops
+source venv/bin/activate
+cd Yummy-Recipes-Api
+gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
+
+EOF'
+
+    export DATABASE_URL="postgres://postgres:postgres1234@postgresdb.cztrtf3jyreo.us-east-2.rds.amazonaws.com:5432/yummy_api"
+}
 configureSystemd(){
     printf "***********************Configuring Systemd*************** \n"
     sudo rm -rf /etc/systemd/system/yummy.service
@@ -102,8 +110,7 @@ After=network.target
 [Service]
 User=ubuntu
 Group=www-data
-WorkingDirectory=/home/ubuntu/Devops/Yummy-Recipes-Api
-ExecStart=/home/ubuntu/Devops/Yummy-Recipes-Api/venv/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
+ExecStart=/bin/bash /home/ubuntu/Devops/Yummy-Recipes-Api/yummy.sh
 Restart=always
 RestartSec=10
 TimeoutStartSec=5min
@@ -112,10 +119,6 @@ TimeoutStartSec=5min
 WantedBy=multi-user.target
 
 EOF'
-}
-exportDatabaseUrl(){
-    printf "********************Exporting DATABASE_URL****************** \n"
-    export DATABASE_URL="postgres://postgres:postgres1234@postgresdb.cztrtf3jyreo.us-east-2.rds.amazonaws.com:5432/yummy_api"
 }
 
 startApp(){
@@ -130,7 +133,6 @@ run(){
     updateServer
     exportLang
     setupVirtualenv
-    activateVirtualenv
     installPython
     installNginxGunicorn
     cloneRepo
@@ -139,8 +141,8 @@ run(){
     configureNginx
     configureSSH
     startNginx
+    setupYummy
     configureSystemd
-    exportDatabaseUrl
     startApp
 }
 
