@@ -73,7 +73,7 @@ server {
         listen 80 default_server;
         listen [::]:80 ;
 
-        server_name anyric.tk www.anyric.tk;
+        server_name _;
 
         location / {
             proxy_pass http://0.0.0.0:5000;
@@ -87,7 +87,6 @@ restartNginx(){
     printf "*******************Restarting Nginx********************** \n"
     sudo ln -s /etc/nginx/sites-available/yummy /etc/nginx/sites-enabled
     sudo ufw allow 'Nginx Full'
-    sudo ufw delete allow 'Nginx HTTP'
 }
 
 configureSSH(){
@@ -127,11 +126,12 @@ exportDatabaseUrl(){
 
 startApp(){
     printf "*******************Starting App*************************** \n"
-    sudo chmod 755 /etc/systemd/system/yummy.service
-    sudo systemctl daemon-reload
-    sudo systemctl start yummy
-    sudo systemctl enable yummy
-    sudo systemctl restart yummy
+    # sudo chmod 755 /etc/systemd/system/yummy.service
+    # sudo systemctl daemon-reload
+    # sudo systemctl start yummy
+    # sudo systemctl enable yummy
+    # sudo systemctl restart yummy
+    sudo gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
 }
 
 run(){
