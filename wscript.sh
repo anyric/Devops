@@ -14,8 +14,13 @@ exportLang() {
 
 installPython(){
     printf '**********************Installing Python 3.6 and dependancies***************** \n'
-    sudo apt-get install -y python=3.6
-    sudo apt-get install -y python3-pip  
+    sudo apt-get install -y python3.6 python3-pip nginx python3.6-gdbm
+    sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.5 1
+    sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 10
+    sudo update-alternatives --config -y python3
+    
+    pip3 install virtualenv
+    virtualenv -p python3 venv
 }
 
 installNginxGunicorn(){
@@ -23,11 +28,6 @@ installNginxGunicorn(){
     sudo apt-get install -y nginx gunicorn
 }
 
-setupVirtualenv(){
-    printf "******************Setting up virtualenv******************* \n"
-    sudo apt-get install -y virtualenv
-    virtualenv -p /usr/bin/python3 venv
-}
 
 cloneRepo(){
     printf "*******************Cloning git Repo******************* \n"
@@ -37,7 +37,7 @@ cloneRepo(){
 setupProjectDependancies(){
     printf "*******************Installing requirements.txt************* \n"
     cd Yummy-Recipes-Api
-    pip3.6 install -r requirements.txt
+    pip3 install -r requirements.txt
 }
 
 setupHostIP(){
@@ -79,7 +79,6 @@ EOF'
 
 configureSSH(){
     printf "********************Configuring SSH****************** \n"
-    sudo apt-get install -y software-properties-common
     sudo add-apt-repository ppa:certbot/certbot
     sudo apt-get update
     sudo apt-get install -y python-certbot-nginx
@@ -110,11 +109,7 @@ After=network.target
 
 [Service]
 User=ubuntu
-Group=www-data
 ExecStart=/bin/bash /home/ubuntu/Devops/Yummy-Recipes-Api/yummy.sh
-Restart=always
-RestartSec=10
-TimeoutStartSec=5min
 
 [Install]
 WantedBy=multi-user.target
