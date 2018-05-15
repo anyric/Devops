@@ -138,7 +138,7 @@ run(){
     setupProjectDependancies
     setupHostIP
     configureNginx
-    # configureSSH
+    configureSSH
     startNginx
     setupYummy
     configureSystemd
