@@ -20,6 +20,7 @@ installPython(){
     sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.5 1
     sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 10
     sudo update-alternatives --config -y python3
+    sudo apt-get install -y pip
     
     pip3 install virtualenv
     virtualenv -p python3 venv
@@ -39,7 +40,7 @@ cloneRepo(){
 setupProjectDependancies(){
     printf "*******************Installing requirements.txt************* \n"
     cd Yummy-Recipes-Api
-    pip3 install -r requirements.txt
+    pip install -r requirements.txt
 }
 
 setupHostIP(){
