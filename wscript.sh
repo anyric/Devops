@@ -16,10 +16,12 @@ installPython(){
     printf '**********************Installing Python 3.6 and dependancies***************** \n'
     sudo add-apt-repository -y ppa:deadsnakes/ppa
     sudo apt-get update
-    sudo apt-get install -y python3.6 python3-pip nginx python3.6-gdbm
-    sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.5 1
-    sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 10
-    sudo update-alternatives --config -y python3
+    sudo curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+    sudo python3 get-pip.py --force-reinstall
+    # sudo apt-get install -y python3.6 python3-pip nginx python3.6-gdbm
+    # sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.5 1
+    # sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 10
+    # sudo update-alternatives --config -y python3
     sudo apt-get install -y pip
     
     pip3 install virtualenv
