@@ -37,18 +37,13 @@ setupProjectDependancies(){
     sudo npm install
 }
 
-
-startNginx(){
-    printf "******************Starting Nginx************************** \n"
-    sudo systemctl start nginx
-}
-
 configureNginx(){
     printf "******************Configuring Nginx*********************** \n"
+    sudo systemctl start nginx
     sudo rm -rf /etc/nginx/sites-available/yummy /etc/nginx/sites-enabled/yummy
     sudo bash -c 'cat <<EOF> /etc/nginx/sites-available/yummy
 server {
-        listen 80 default_server;
+        listen 80;
         location / {
             proxy_pass http://127.0.0.1:3000/;
             proxy_set_header Host \$host;
@@ -61,6 +56,7 @@ EOF'
     sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
     sudo ln -s /etc/nginx/sites-available/yummy /etc/nginx/sites-enabled/
     sudo ufw allow 'Nginx Full'
+    sudo systemctl restart nginx
 }
 
 setupYummy(){
@@ -108,7 +104,6 @@ run(){
     setupProjectDependancies
     setupHostIP
     configureNginx
-    startNginx
     setupYummy
     configureSystemd
     startApp
