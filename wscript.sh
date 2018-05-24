@@ -54,13 +54,9 @@ if __name__ == "__main__":
 EOF'
 }
 
-startNginx(){
-    printf "******************Starting Nginx************************** \n"
-    sudo systemctl start nginx
-}
-
 configureNginx(){
     printf "******************Configuring Nginx*********************** \n"
+    sudo systemctl start nginx
     sudo rm -rf /etc/nginx/sites-available/yummy /etc/nginx/sites-enabled/yummy
     sudo bash -c 'cat <<EOF> /etc/nginx/sites-available/yummy
 server {
@@ -77,6 +73,7 @@ EOF'
     sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
     sudo ln -s /etc/nginx/sites-available/yummy /etc/nginx/sites-enabled/
     sudo ufw allow 'Nginx Full'
+    sudo systemctl restart nginx
 }
 
 configureSSH(){
@@ -139,7 +136,6 @@ run(){
     setupHostIP
     configureNginx
     configureSSH
-    startNginx
     setupYummy
     configureSystemd
     startApp
