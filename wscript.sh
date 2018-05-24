@@ -97,7 +97,7 @@ gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
 
 EOF'
 
-    export DATABASE_URL="postgres://postgres:postgres1234@postgresdb.cztrtf3jyreo.us-east-2.rds.amazonaws.com:5432/yummy_api"
+    export DATABASE_URL="postgres://anyric:anyric1234@yummy.cztrtf3jyreo.us-east-2.rds.amazonaws.com:5432/yummy_api"
 }
 configureSystemd(){
     printf "***********************Configuring Systemd*************** \n"
