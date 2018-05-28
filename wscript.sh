@@ -27,7 +27,7 @@ installPython(){
 
 installNginxGunicorn(){
     printf "*********************Installing Nginx******************************* \n"
-    sudo apt-get install -y nginx gunicorn
+    sudo apt-get install -y nginx nginx-extras gunicorn
 }
 
 

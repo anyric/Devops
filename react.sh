@@ -22,7 +22,7 @@ installNodjs(){
 
 installNginx(){
     printf "*********************Installing Nginx******************************* \n"
-    sudo apt-get install -y nginx
+    sudo apt-get install -y nginx nginx-extras 
 }
 
 
